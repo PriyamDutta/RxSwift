@@ -36,8 +36,8 @@ extension ObservableType {
 
 final private class ZipCollectionTypeSink<Collection: Swift.Collection, O: ObserverType>
     : Sink<O> where Collection.Element: ObservableConvertibleType {
-    typealias R = O.Element 
-    typealias Parent = ZipCollectionType<Collection, R>
+    typealias Result = O.Element 
+    typealias Parent = ZipCollectionType<Collection, Result>
     typealias SourceElement = Collection.Element.Element
     
     private let _parent: Parent
@@ -148,8 +148,8 @@ final private class ZipCollectionTypeSink<Collection: Swift.Collection, O: Obser
     }
 }
 
-final private class ZipCollectionType<Collection: Swift.Collection, R>: Producer<R> where Collection.Element: ObservableConvertibleType {
-    typealias ResultSelector = ([Collection.Element.Element]) throws -> R
+final private class ZipCollectionType<Collection: Swift.Collection, Result>: Producer<Result> where Collection.Element: ObservableConvertibleType {
+    typealias ResultSelector = ([Collection.Element.Element]) throws -> Result
     
     let sources: Collection
     let resultSelector: ResultSelector
@@ -161,7 +161,7 @@ final private class ZipCollectionType<Collection: Swift.Collection, R>: Producer
         self.count = Int(Int64(self.sources.count))
     }
     
-    override func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.Element == R {
+    override func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.Element == Result {
         let sink = ZipCollectionTypeSink(parent: self, observer: observer, cancel: cancel)
         let subscription = sink.run()
         return (sink: sink, subscription: subscription)
