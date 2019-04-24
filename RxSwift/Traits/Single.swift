@@ -258,7 +258,7 @@ extension PrimitiveSequenceType where Trait == SingleTrait {
      - parameter resultSelector: Function to invoke for each series of elements at corresponding indexes in the sources.
      - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
      */
-    public static func zip<C: Collection, R>(_ collection: C, resultSelector: @escaping ([Element]) throws -> R) -> PrimitiveSequence<Trait, R> where C.Iterator.Element == PrimitiveSequence<Trait, Element> {
+    public static func zip<Collection: Swift.Collection, R>(_ collection: Collection, resultSelector: @escaping ([Element]) throws -> R) -> PrimitiveSequence<Trait, R> where Collection.Element == PrimitiveSequence<Trait, Element> {
         
         if collection.isEmpty {
             return PrimitiveSequence<Trait, R>.deferred {
@@ -275,7 +275,7 @@ extension PrimitiveSequenceType where Trait == SingleTrait {
      
      - returns: An observable sequence containing the result of combining elements of the sources.
      */
-    public static func zip<C: Collection>(_ collection: C) -> PrimitiveSequence<Trait, [Element]> where C.Iterator.Element == PrimitiveSequence<Trait, Element> {
+    public static func zip<Collection: Swift.Collection>(_ collection: Collection) -> PrimitiveSequence<Trait, [Element]> where Collection.Element == PrimitiveSequence<Trait, Element> {
         
         if collection.isEmpty {
             return PrimitiveSequence<Trait, [Element]>(raw: .just([]))
